@@ -1,0 +1,20 @@
+{
+  "name": "arcademy-contracts",
+  "version": "1.0.0",
+  "description": "ARCademy Smart Contracts — RewardDistributor & ChallengeEscrow on Arc L1",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network arcTestnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network arcMainnet"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.5"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.1"
+  }
+}

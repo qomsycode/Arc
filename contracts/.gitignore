@@ -1,0 +1,22 @@
+# =================================
+# Contracts .gitignore (Hardhat)
+# =================================
+
+node_modules/
+
+# Hardhat compiled output
+artifacts/
+cache/
+typechain/
+typechain-types/
+
+# Environment Variables (contains deployer private key — NEVER commit)
+.env
+.env.local
+
+# Coverage reports
+coverage/
+coverage.json
+
+# Logs
+*.log

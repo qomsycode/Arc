@@ -1,0 +1,18 @@
+# ==============================
+# Backend .gitignore (Express)
+# ==============================
+
+node_modules/
+
+# Environment Variables
+.env
+.env.local
+
+# Logs
+*.log
+output.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
