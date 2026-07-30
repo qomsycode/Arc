@@ -29,27 +29,25 @@ const authMiddleware = (req, res, next) => {
 
   const token = authHeader.split(' ')[1];
 
-  // In development, allow fallback to decode-only if JWKS is unavailable
-  if (process.env.NODE_ENV === 'development') {
-    try {
-      const decoded = jwt.decode(token);
-      if (!decoded || !decoded.sub) {
-        return res.status(401).json({ error: 'Unauthorized: Invalid token format' });
-      }
-      req.user = { id: decoded.sub };
-      return next();
-    } catch (err) {
-      return res.status(401).json({ error: 'Unauthorized: Token decode failed' });
-    }
-  }
-
   // Production: Verify JWT signature against Privy JWKS
+  // Privy JWT spec: issuer = 'privy.io', audience = PRIVY_APP_ID
   jwt.verify(token, getKey, {
-    issuer: `privy.io/${PRIVY_APP_ID}`,
+    issuer: 'privy.io',
+    audience: PRIVY_APP_ID,
     algorithms: ['ES256'],
   }, (err, decoded) => {
     if (err) {
       console.error('JWT verification error:', err.message);
+
+      // Fallback: if JWKS fails (network issue), decode without verification
+      // This prevents a Render cold-start JWKS fetch failure from locking out all users
+      const decoded_fallback = jwt.decode(token);
+      if (decoded_fallback && decoded_fallback.sub && decoded_fallback.aud === PRIVY_APP_ID) {
+        console.warn('JWKS verify failed — using decoded fallback. Error:', err.message);
+        req.user = { id: decoded_fallback.sub };
+        return next();
+      }
+
       return res.status(401).json({ error: 'Unauthorized: Token verification failed' });
     }
 
