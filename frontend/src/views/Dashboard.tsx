@@ -58,21 +58,21 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#08090c] text-[#f0f2ff]">
       {/* Header */}
-      <header className="border-b border-[#1e2436] px-12 py-5">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#676fff] to-[#9b59b6] flex items-center justify-center text-white font-black text-sm">
+      <header className="border-b border-[#1e2436] px-4 sm:px-12 py-3 sm:py-5">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-[#676fff] to-[#9b59b6] flex items-center justify-center text-white font-black text-xs sm:text-sm">
               A
             </div>
-            <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-[#f0f2ff] to-[#676fff] bg-clip-text text-transparent">
+            <span className="text-base sm:text-lg font-bold tracking-tight bg-gradient-to-r from-[#f0f2ff] to-[#676fff] bg-clip-text text-transparent">
               ARCademy
             </span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <WalletBadge />
             <button
               onClick={logout}
-              className="text-sm font-medium text-[#8892b0] hover:text-[#f0f2ff] bg-[#10121a] border border-[#1e2436] hover:border-[#676fff] px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer"
+              className="text-xs sm:text-sm font-medium text-[#8892b0] hover:text-[#f0f2ff] bg-[#10121a] border border-[#1e2436] hover:border-[#676fff] px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg transition-all duration-200 cursor-pointer"
             >
               Logout
             </button>
@@ -81,7 +81,7 @@ const Dashboard = () => {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-12 py-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-12 py-6 sm:py-12">
         <div className="mb-10">
           <h2 className="text-3xl font-bold tracking-tight mb-1">Dashboard</h2>
           <p className="text-[#8892b0] text-sm">Welcome back! Here is your progress at a glance.</p>

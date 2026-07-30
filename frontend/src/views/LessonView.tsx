@@ -126,17 +126,17 @@ const LessonView = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Top Navbar */}
-      <nav className="w-full border-b border-[#222] px-6 py-4 flex justify-between items-center bg-[#0a0a0a] sticky top-0 z-10">
-        <div className="flex items-center gap-6">
-          <Link to="/learn" className="text-[#8892b0] hover:text-white transition-colors">
-            <ArrowLeft size={20} />
+      <nav className="w-full border-b border-[#222] px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center bg-[#0a0a0a] sticky top-0 z-10 gap-2">
+        <div className="flex items-center gap-2 sm:gap-6 min-w-0">
+          <Link to="/learn" className="text-[#8892b0] hover:text-white transition-colors shrink-0">
+            <ArrowLeft size={18} />
           </Link>
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-[#555]">Lesson {lesson.id}:</span>
-            <span className="font-bold text-white">{lesson.title}</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-base min-w-0">
+            <span className="font-semibold text-[#555] shrink-0">Lesson {lesson.id}:</span>
+            <span className="font-bold text-white truncate max-w-[120px] sm:max-w-none">{lesson.title}</span>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           <WalletBadge />
         </div>
       </nav>

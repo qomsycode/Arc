@@ -45,18 +45,18 @@ const BuildPage = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Top Navbar */}
-      <nav className="w-full border-b border-[#222] px-8 py-4 flex justify-between items-center bg-[#0a0a0a] sticky top-0 z-10">
-        <div className="flex items-center gap-6">
-          <Link to="/dashboard" className="text-[#8892b0] hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
-            <ArrowLeft size={18} />
+      <nav className="w-full border-b border-[#222] px-4 sm:px-8 py-3 sm:py-4 flex justify-between items-center bg-[#0a0a0a] sticky top-0 z-10 gap-2">
+        <div className="flex items-center gap-2 sm:gap-6 min-w-0">
+          <Link to="/dashboard" className="text-[#8892b0] hover:text-white transition-colors flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium shrink-0">
+            <ArrowLeft size={16} />
             <span>Dashboard</span>
           </Link>
-          <div className="h-4 w-[1px] bg-[#222]" />
-          <span className="font-bold text-lg tracking-tight">ARCademy Build Bounties</span>
+          <div className="h-4 w-[1px] bg-[#222] hidden sm:block" />
+          <span className="font-bold text-xs sm:text-lg tracking-tight truncate hidden sm:inline">ARCademy Build Bounties</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           {(profile?.role === 'admin' || profile?.role === 'reviewer') && (
-            <Link to="/admin" className="text-xs text-[#8892b0] hover:text-white border border-[#333] px-3 py-1.5 rounded-lg transition-colors">
+            <Link to="/admin" className="text-xs text-[#8892b0] hover:text-white border border-[#333] px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
               Admin Portal
             </Link>
           )}
