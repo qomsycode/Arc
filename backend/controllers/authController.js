@@ -56,4 +56,22 @@ const syncUser = async (req, res) => {
   }
 };
 
-module.exports = { syncUser };
+const getProfile = async (req, res) => {
+  const privyUserId = req.user.id;
+
+  try {
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', privyUserId)
+      .single();
+
+    if (error) throw error;
+    res.status(200).json({ profile });
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ error: 'Failed to fetch user profile' });
+  }
+};
+
+module.exports = { syncUser, getProfile };

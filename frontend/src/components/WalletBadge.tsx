@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Check, Copy } from 'lucide-react';
 
-const WalletBadge = () => {
-  const { walletAddress } = useAuth();
+interface WalletBadgeProps {
+  hideXp?: boolean;
+}
+
+const WalletBadge = ({ hideXp = false }: WalletBadgeProps) => {
+  const { walletAddress, profile } = useAuth();
   const [copied, setCopied] = useState(false);
 
   const formatAddress = (address: string) => {
@@ -26,6 +30,8 @@ const WalletBadge = () => {
     );
   }
 
+  const xpPoints = profile?.xp_points || 0;
+
   return (
     <button
       onClick={handleCopy}
@@ -41,12 +47,15 @@ const WalletBadge = () => {
         {copied ? <Check size={12} className="text-[#3cd876]" /> : <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
       </span>
 
-      <div className="w-px h-3.5 bg-[#1e2436]" />
-
-      {/* USDC balance */}
-      <span className="text-[13px] font-bold text-[#676fff]">
-        $0.00 USDC
-      </span>
+      {!hideXp && (
+        <>
+          <div className="w-px h-3.5 bg-[#1e2436]" />
+          {/* XP Points */}
+          <span className="text-[13px] font-bold text-[#676fff]">
+            {xpPoints} XP
+          </span>
+        </>
+      )}
     </button>
   );
 };

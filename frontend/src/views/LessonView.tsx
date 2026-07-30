@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Navigate, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { lessons } from '../data/lessons';
@@ -14,7 +14,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 const LessonView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { authenticated, ready, getAccessToken } = useAuth();
+  const { authenticated, ready, getAccessToken, refreshProfile } = useAuth();
   
   const [showQuiz, setShowQuiz] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -97,7 +97,7 @@ const LessonView = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      const { score, passed } = res.data;
+      const { score } = res.data;
       setQuizScore(score);
       setShowQuiz(false);
       setShowResults(true);
@@ -113,6 +113,7 @@ const LessonView = () => {
   const handleClaim = async () => {
     setIsClaiming(true);
     try {
+      await refreshProfile();
       setShowResults(false);
       navigate('/learn');
     } catch (error) {
@@ -193,7 +194,7 @@ const LessonView = () => {
                   {children}
                 </blockquote>
               ),
-              code: ({ className, children, ...props }) => {
+              code: ({ className, children }) => {
                 const isBlock = className || (typeof children === 'string' && children.includes('\n'));
                 return isBlock ? (
                   <pre className="bg-[#111] border border-[#222] rounded-xl p-5 overflow-x-auto my-6 text-sm font-mono text-[#cbd5e1] leading-relaxed">

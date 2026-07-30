@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 
@@ -27,7 +26,7 @@ const LoginPage = () => {
         <h1 className="text-2xl font-bold text-white mb-2">ARCademy</h1>
 
         <p className="text-sm text-[#777] text-center leading-relaxed mb-10">
-          Learn, build, and earn USDC on the Arc L1 Blockchain.
+          Learn, build, and earn on the Arc L1 Blockchain.
         </p>
 
         <button

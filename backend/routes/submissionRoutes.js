@@ -6,6 +6,7 @@ const {
   reviewSubmission 
 } = require('../controllers/submissionController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const requireRole = require('../middlewares/requireRole');
 
 const router = express.Router();
 
@@ -13,8 +14,8 @@ const router = express.Router();
 router.post('/submit', authMiddleware, submitChallenge);
 router.get('/my', authMiddleware, getMySubmissions);
 
-// Admin routes
-router.get('/admin/all', authMiddleware, listAllSubmissions);
-router.post('/admin/review/:submissionId', authMiddleware, reviewSubmission);
+// Admin routes — protected by role check
+router.get('/admin/all', authMiddleware, requireRole('admin', 'reviewer'), listAllSubmissions);
+router.post('/admin/review/:submissionId', authMiddleware, requireRole('admin', 'reviewer'), reviewSubmission);
 
 module.exports = router;

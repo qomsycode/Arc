@@ -3,7 +3,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { challenges } from '../data/challenges';
 import WalletBadge from '../components/WalletBadge';
-import { ArrowLeft, ExternalLink, Code2, Send, CheckCircle2, Clock } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Code2, Send } from 'lucide-react';
 import axios from 'axios';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';

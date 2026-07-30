@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
 import WalletBadge from '../components/WalletBadge';
 import LessonCard from '../components/LessonCard';
 import { lessons } from '../data/lessons';
-import { ArrowLeft, BookOpen, CheckCircle2, Lock } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
@@ -18,7 +18,7 @@ interface ProgressRecord {
 const LearnPage = () => {
   const { authenticated, ready, getAccessToken } = useAuth();
   const [completedLessonIds, setCompletedLessonIds] = useState<number[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProgress = async () => {

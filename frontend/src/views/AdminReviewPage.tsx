@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
 import WalletBadge from '../components/WalletBadge';
-import { ArrowLeft, ExternalLink, Check, X, ShieldCheck, Code2 } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Check, X, ShieldCheck, Code2, ShieldAlert } from 'lucide-react';
 import axios from 'axios';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
@@ -20,7 +20,7 @@ interface Submission {
 }
 
 const AdminReviewPage = () => {
-  const { authenticated, ready, getAccessToken } = useAuth();
+  const { authenticated, ready, getAccessToken, profile } = useAuth();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [feedbackInput, setFeedbackInput] = useState<Record<number, string>>({});
@@ -48,6 +48,37 @@ const AdminReviewPage = () => {
 
   if (!ready) return <div className="flex h-screen w-full bg-[#0a0a0a]" />;
   if (!authenticated) return <Navigate to="/login" replace />;
+  
+  // Show loading while profile details are being fetched
+  if (authenticated && !profile) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center text-[#555] text-sm">
+        <div className="w-5 h-5 rounded-full border-2 border-[#333] border-t-white animate-spin mb-4" />
+        <span>Verifying authorization...</span>
+      </div>
+    );
+  }
+  
+  // Show 403 Access Denied for unauthorized roles
+  if (profile && profile.role !== 'admin' && profile.role !== 'reviewer') {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-16 h-16 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-6 text-rose-400">
+          <ShieldAlert size={32} />
+        </div>
+        <h1 className="text-2xl font-bold mb-2">403 - Forbidden</h1>
+        <p className="text-[#8892b0] max-w-sm mb-6 text-sm">
+          You do not have administrative privileges to access the reviewer portal.
+        </p>
+        <Link 
+          to="/dashboard" 
+          className="bg-[#151515] hover:bg-[#222] text-[#8892b0] hover:text-white border border-[#333] font-medium px-6 py-2.5 rounded-lg transition-colors"
+        >
+          Return to Dashboard
+        </Link>
+      </div>
+    );
+  }
 
   const handleReview = async (submissionId: number, status: 'approved' | 'needs_improvement') => {
     setReviewingId(submissionId);
@@ -85,7 +116,7 @@ const AdminReviewPage = () => {
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <WalletBadge />
+          <WalletBadge hideXp />
         </div>
       </nav>
 
@@ -94,7 +125,7 @@ const AdminReviewPage = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Project Review Queue</h1>
           <p className="text-[#8892b0] text-sm">
-            Review user code submissions, verify requirements, leave feedback notes, and release USDC escrow bounties.
+            Review user code submissions, verify requirements, and leave feedback notes.
           </p>
         </div>
 
@@ -165,7 +196,7 @@ const AdminReviewPage = () => {
                         className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2 rounded-lg text-sm transition-colors flex items-center gap-1.5 cursor-pointer"
                       >
                         <Check size={16} />
-                        <span>Approve & Release Escrow</span>
+                        <span>Approve Submission</span>
                       </button>
                       <button
                         onClick={() => handleReview(sub.id, 'needs_improvement')}

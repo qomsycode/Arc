@@ -1,12 +1,43 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
 import WalletBadge from '../components/WalletBadge';
 import { challenges } from '../data/challenges';
-import { ArrowLeft, Code2, ShieldAlert, Award, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Award, ExternalLink } from 'lucide-react';
+import axios from 'axios';
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
+interface Submission {
+  id: number;
+  challenge_id: number;
+  github_url: string;
+  live_url?: string;
+  status: 'pending' | 'approved' | 'needs_improvement';
+  reviewer_feedback?: string;
+  submitted_at: string;
+}
 
 const BuildPage = () => {
-  const { authenticated, ready } = useAuth();
+  const { authenticated, ready, profile, getAccessToken } = useAuth();
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      if (!authenticated) return;
+      try {
+        const token = await getAccessToken();
+        const res = await axios.get(`${backendUrl}/api/submissions/my`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setSubmissions(res.data.submissions || []);
+      } catch (err) {
+        console.error('Error fetching my submissions:', err);
+      }
+    };
+
+    fetchSubmissions();
+  }, [authenticated]);
 
   if (!ready) return <div className="flex h-screen w-full bg-[#0a0a0a]" />;
   if (!authenticated) return <Navigate to="/login" replace />;
@@ -24,9 +55,11 @@ const BuildPage = () => {
           <span className="font-bold text-lg tracking-tight">ARCademy Build Bounties</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/admin" className="text-xs text-[#8892b0] hover:text-white border border-[#333] px-3 py-1.5 rounded-lg transition-colors">
-            Admin Portal
-          </Link>
+          {(profile?.role === 'admin' || profile?.role === 'reviewer') && (
+            <Link to="/admin" className="text-xs text-[#8892b0] hover:text-white border border-[#333] px-3 py-1.5 rounded-lg transition-colors">
+              Admin Portal
+            </Link>
+          )}
           <WalletBadge />
         </div>
       </nav>
@@ -49,6 +82,61 @@ const BuildPage = () => {
           </div>
         </div>
       </header>
+
+      {/* User's Submissions List Tracker */}
+      {submissions.length > 0 && (
+        <section className="max-w-6xl mx-auto px-8 py-4 mb-6">
+          <div className="bg-[#111] border border-[#222] rounded-2xl p-6">
+            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+              📂 My Challenge Submissions
+            </h2>
+            <div className="space-y-4">
+              {submissions.map((sub) => {
+                const associatedChallenge = challenges.find((c) => c.id === sub.challenge_id);
+                return (
+                  <div key={sub.id} className="bg-[#151515] border border-[#222] rounded-xl p-4 flex flex-col md:flex-row justify-between gap-4">
+                    <div>
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
+                        <span className="text-sm font-bold text-white">
+                          {associatedChallenge ? associatedChallenge.title : `Challenge #${sub.challenge_id}`}
+                        </span>
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                          sub.status === 'approved' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                          sub.status === 'pending' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                          'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                        }`}>
+                          {sub.status}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-[#8892b0] mb-2 font-mono">
+                        <span>Submitted GitHub:</span>
+                        <a href={sub.github_url} target="_blank" rel="noreferrer" className="text-[#676fff] hover:underline flex items-center gap-0.5">
+                          {sub.github_url.replace('https://github.com/', '')}
+                          <ExternalLink size={10} />
+                        </a>
+                      </div>
+                      {sub.reviewer_feedback && (
+                        <div className="mt-2 p-3 bg-[#1e1e1e] border border-[#2d2d2d] rounded-lg text-xs text-[#8892b0]">
+                          <span className="font-bold text-white block mb-0.5">Reviewer Feedback:</span>
+                          {sub.reviewer_feedback}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center">
+                      <Link
+                        to={`/build/${sub.challenge_id}`}
+                        className="text-xs text-[#8892b0] hover:text-white border border-[#333] hover:border-[#676fff] px-3.5 py-2 rounded-lg font-medium transition-all"
+                      >
+                        View Challenge Details
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Grid of Challenges */}
       <main className="max-w-6xl mx-auto px-8 py-6 pb-20">

@@ -114,7 +114,7 @@ const Dashboard = () => {
           <Link to="/build" className="block">
             <div className="bg-[#10121a] border border-[#1e2436] hover:border-[#3cd876] hover:bg-[#1a1d29] transition-all duration-200 rounded-xl p-7 cursor-pointer h-full">
               <h3 className="font-semibold text-[#f0f2ff] mb-2">🛠️ Build Challenges</h3>
-              <p className="text-sm text-[#8892b0]">Real coding challenges with USDC bounties up to $75 per project.</p>
+              <p className="text-sm text-[#8892b0]">Real coding challenges to sharpen your Arc L1 skills.</p>
             </div>
           </Link>
         </div>

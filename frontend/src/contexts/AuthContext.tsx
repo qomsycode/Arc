@@ -1,7 +1,15 @@
-import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import { usePrivy, useWallets, useCreateWallet } from '@privy-io/react-auth';
 import { User } from '@privy-io/react-auth';
 import axios from 'axios';
+
+interface Profile {
+  id: string;
+  email: string | null;
+  wallet_address: string | null;
+  role: 'student' | 'reviewer' | 'admin';
+  xp_points: number;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -12,6 +20,8 @@ interface AuthContextType {
   syncing: boolean;
   walletAddress: string | null;
   getAccessToken: () => Promise<string | null>;
+  profile: Profile | null;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,23 +32,52 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { createWallet } = useCreateWallet();
   const [syncing, setSyncing] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
+  const refreshProfile = async () => {
+    if (!authenticated) return;
+    try {
+      const token = await getAccessToken();
+      if (!token) return;
+      const res = await axios.get(`${backendUrl}/api/auth/profile`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.data?.profile) {
+        setProfile(res.data.profile);
+      }
+    } catch (err) {
+      console.error('Error refreshing profile:', err);
+    }
+  };
 
   // Helper: sync user profile to backend
   const syncToBackend = async (wallet?: string | null, email?: string | null) => {
     try {
       const token = await getAccessToken();
       if (!token) return;
-      await axios.post(
+      const res = await axios.post(
         `${backendUrl}/api/auth/sync`,
         { wallet_address: wallet || null, email: email || null },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      if (res.data?.profile) {
+        setProfile(res.data.profile);
+      }
     } catch (err) {
       console.error('Backend sync error:', err);
     }
   };
+
+  // Fetch profile when authenticated changes to true
+  useEffect(() => {
+    if (authenticated) {
+      refreshProfile();
+    } else {
+      setProfile(null);
+    }
+  }, [authenticated]);
 
   // Effect 1: On login — sync profile and explicitly create wallet if none exists
   useEffect(() => {
@@ -98,6 +137,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       syncing,
       walletAddress,
       getAccessToken,
+      profile,
+      refreshProfile,
     }}>
       {children}
     </AuthContext.Provider>
