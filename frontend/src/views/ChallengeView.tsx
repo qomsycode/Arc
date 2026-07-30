@@ -103,7 +103,7 @@ const ChallengeView = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <span className="text-xs font-semibold text-[#8892b0] bg-[#151515] border border-[#222] px-3 py-1 rounded-full mb-3 inline-block">

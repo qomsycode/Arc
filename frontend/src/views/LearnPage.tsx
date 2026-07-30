@@ -82,8 +82,8 @@ const LearnPage = () => {
       </nav>
 
       {/* Hero / Progress Overview Header */}
-      <header className="max-w-6xl mx-auto px-8 pt-10 pb-6">
-        <div className="bg-[#111] border border-[#222] rounded-2xl p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <header className="max-w-6xl mx-auto px-4 sm:px-8 pt-6 sm:pt-10 pb-4 sm:pb-6">
+        <div className="bg-[#111] border border-[#222] rounded-2xl p-4 sm:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6">
           <div>
             <span className="text-xs font-bold text-[#676fff] uppercase tracking-wider mb-2 block">Curriculum Overview</span>
             <h1 className="text-3xl font-bold mb-2">Mastering Arc L1 & Web3 Development</h1>
@@ -110,7 +110,7 @@ const LearnPage = () => {
       </header>
 
       {/* Grid of Lessons */}
-      <main className="max-w-6xl mx-auto px-8 py-6 pb-20">
+      <main className="max-w-6xl mx-auto px-4 sm:px-8 py-4 sm:py-6 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {lessons.map((lesson) => {
             const status = getLessonStatus(lesson.id);
