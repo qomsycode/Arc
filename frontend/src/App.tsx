@@ -1,10 +1,36 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './views/LoginPage';
+import Dashboard from './views/Dashboard';
+import LearnPage from './views/LearnPage';
+import LessonView from './views/LessonView';
+import BuildPage from './views/BuildPage';
+import ChallengeView from './views/ChallengeView';
+import AdminReviewPage from './views/AdminReviewPage';
+import { useAuth } from './contexts/AuthContext';
 
-export default function App() {
+const App = () => {
+  const { ready } = useAuth();
+
+  // Don't render routes until Privy is ready
+  if (!ready) {
+    return <div className="min-h-screen bg-[#0a0a0a]" />;
+  }
+
   return (
-    <div style={{ padding: '40px', textAlign: 'center' }}>
-      <h1 style={{ color: '#4f8aff', marginBottom: '16px' }}>ARCademy Platform</h1>
-      <p style={{ color: '#8b949e' }}>Learn. Build. Earn on Arc L1 Blockchain.</p>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/learn" element={<LearnPage />} />
+        <Route path="/learn/:id" element={<LessonView />} />
+        <Route path="/build" element={<BuildPage />} />
+        <Route path="/build/:id" element={<ChallengeView />} />
+        <Route path="/admin" element={<AdminReviewPage />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </Router>
   );
-}
+};
+
+export default App;
