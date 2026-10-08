@@ -1,7 +1,9 @@
 require('dotenv').config();
 require('@nomicfoundation/hardhat-toolbox');
 
-const DEPLOYER_PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY || '';
+const rawKey = process.env.DEPLOYER_PRIVATE_KEY || '';
+const isValidKey = /^0x[0-9a-fA-F]{64}$/.test(rawKey) || /^[0-9a-fA-F]{64}$/.test(rawKey);
+const accounts = isValidKey ? [rawKey.startsWith('0x') ? rawKey : `0x${rawKey}`] : [];
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -17,14 +19,14 @@ module.exports = {
     arcMainnet: {
       url: 'https://rpc.mainnet.arc.io',
       chainId: 5042,
-      accounts: DEPLOYER_PRIVATE_KEY ? [DEPLOYER_PRIVATE_KEY] : [],
+      accounts: accounts,
     },
 
     // Arc Testnet — Chain ID 5042002
     arcTestnet: {
       url: 'https://rpc.testnet.arc.io',
       chainId: 5042002,
-      accounts: DEPLOYER_PRIVATE_KEY ? [DEPLOYER_PRIVATE_KEY] : [],
+      accounts: accounts,
     },
 
     // Local hardhat network (for unit tests)
