@@ -30,7 +30,7 @@ const LearnPage = () => {
         });
         const records: ProgressRecord[] = res.data.progress || [];
         const completed = records
-          .filter(r => r.status === 'completed' && r.score >= 75)
+          .filter(r => r.status === 'completed' && r.score >= 80)
           .map(r => r.lesson_id);
         setCompletedLessonIds(completed);
       } catch (err) {

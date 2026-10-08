@@ -8,6 +8,8 @@ interface QuizResultsScreenProps {
   onRetry: () => void;
   onClaim: () => void;
   isClaiming: boolean;
+  rewardTxHash?: string;
+  rewardAmount?: number;
 }
 
 const QuizResultsScreen: React.FC<QuizResultsScreenProps> = ({
@@ -16,10 +18,12 @@ const QuizResultsScreen: React.FC<QuizResultsScreenProps> = ({
   onClose,
   onRetry,
   onClaim,
-  isClaiming
+  isClaiming,
+  rewardTxHash,
+  rewardAmount
 }) => {
   const percentage = Math.round((score / totalQuestions) * 100);
-  const passed = percentage >= 75;
+  const passed = percentage >= 80;
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -39,10 +43,24 @@ const QuizResultsScreen: React.FC<QuizResultsScreenProps> = ({
                 You scored {score}/{totalQuestions} ({percentage}%). Next module unlocked!
               </p>
               
-              <div className="w-full bg-[#151515] border border-[#222] rounded-xl p-4 mb-6 flex items-center justify-center gap-3">
+              <div className="w-full bg-[#151515] border border-[#222] rounded-xl p-4 mb-4 flex items-center justify-center gap-3">
                 <Award size={20} className="text-[#676fff]" />
                 <span className="text-sm font-semibold text-white">+50 XP • Knowledge Verified</span>
               </div>
+
+              {rewardTxHash && (
+                <div className="w-full bg-[#111] border border-[#333] rounded-xl p-4 mb-6 flex flex-col items-center gap-2">
+                  <span className="text-sm font-bold text-emerald-400">Reward Sent! +${rewardAmount} USDC</span>
+                  <a 
+                    href={`https://explorer.arc.io/tx/${rewardTxHash}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-xs text-[#676fff] hover:underline"
+                  >
+                    View on Arc Explorer
+                  </a>
+                </div>
+              )}
 
               <button
                 onClick={onClaim}
@@ -59,7 +77,7 @@ const QuizResultsScreen: React.FC<QuizResultsScreenProps> = ({
               </div>
               <h2 className="text-2xl font-bold text-white mb-2">Not Quite There</h2>
               <p className="text-[#8892b0] text-sm mb-8">
-                You scored {score}/{totalQuestions} ({percentage}%). You need 75% or higher to unlock the next module.
+                You scored {score}/{totalQuestions} ({percentage}%). You need 80% or higher to unlock the next module.
               </p>
               
               <button

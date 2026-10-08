@@ -24,6 +24,7 @@ const LessonView = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isLocked, setIsLocked] = useState(false);
   const [checkingProgress, setCheckingProgress] = useState(true);
+  const [rewardData, setRewardData] = useState<{ txHash?: string, amount?: number } | null>(null);
 
   const lesson = lessons.find(l => l.id === Number(id));
 
@@ -42,7 +43,7 @@ const LessonView = () => {
           headers: { Authorization: `Bearer ${token}` }
         });
         const records = res.data.progress || [];
-        const isPrevCompleted = records.some((r: any) => r.lesson_id === lesson.id - 1 && r.status === 'completed' && r.score >= 75);
+        const isPrevCompleted = records.some((r: any) => r.lesson_id === lesson.id - 1 && r.status === 'completed' && r.score >= 80);
         if (!isPrevCompleted) {
           setIsLocked(true);
         }
@@ -97,8 +98,9 @@ const LessonView = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      const { score } = res.data;
+      const { score, rewardTxHash, rewardAmount } = res.data;
       setQuizScore(score);
+      setRewardData({ txHash: rewardTxHash, amount: rewardAmount });
       setShowQuiz(false);
       setShowResults(true);
 
@@ -230,7 +232,7 @@ const LessonView = () => {
         <div className="border-t border-[#222] pt-8 flex justify-between items-center bg-[#111] border border-[#222] p-8 rounded-2xl">
           <div>
             <h3 className="font-bold text-lg mb-1">Ready to test your knowledge?</h3>
-            <p className="text-[#777] text-sm">Pass the quiz with 75% or higher to unlock the next lesson.</p>
+            <p className="text-[#777] text-sm">Pass the quiz with 80% or higher to unlock the next lesson.</p>
           </div>
           <button 
             onClick={() => setShowQuiz(true)}
@@ -263,6 +265,8 @@ const LessonView = () => {
           }}
           onClaim={handleClaim}
           isClaiming={isClaiming}
+          rewardTxHash={rewardData?.txHash}
+          rewardAmount={rewardData?.amount}
         />
       )}
     </div>

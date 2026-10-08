@@ -26,7 +26,7 @@ const Dashboard = () => {
           headers: { Authorization: `Bearer ${token}` }
         }).then(r => r.json());
         
-        const completedCount = (resProgress.progress || []).filter((r: any) => r.status === 'completed' && r.score >= 75).length;
+        const completedCount = (resProgress.progress || []).filter((r: any) => r.status === 'completed' && r.score >= 80).length;
         const progressPercent = Math.round((completedCount / 10) * 100);
 
         // Fetch submissions
