@@ -35,10 +35,11 @@ const gradeQuiz = async (req, res) => {
     }
 
     const percentage = (correctCount / totalQuestions) * 100;
-    const passed = percentage >= 75;
+    const passed = percentage >= 80;
 
     let xpGiven = false;
     let xpAmount = 0;
+    let rewardTxHash = null;
 
     if (passed) {
       // 1. Mark lesson as complete
@@ -48,6 +49,34 @@ const gradeQuiz = async (req, res) => {
       xpAmount = 50;
       await addXP(userId, xpAmount);
       xpGiven = true;
+
+      // 3. Web3 Reward Integration ($0.01 USDC)
+      try {
+        const supabase = require('../db/supabaseClient');
+        const { sendQuizReward } = require('../services/web3Service');
+
+        // Fetch user's wallet address
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('wallet_address')
+          .eq('id', userId)
+          .single();
+
+        if (profile && profile.wallet_address) {
+          // Trigger the smart contract
+          rewardTxHash = await sendQuizReward(profile.wallet_address, lessonId);
+          
+          if (rewardTxHash) {
+            // Log the reward in the database
+            const { logReward } = require('../models/rewardsModel');
+            await logReward(userId, 0.01, 'quiz_pass', rewardTxHash);
+          }
+        } else {
+          console.log(`User ${userId} passed but has no wallet address connected.`);
+        }
+      } catch (err) {
+        console.error('Failed to process Web3 reward:', err);
+      }
     }
 
     return res.status(200).json({
@@ -56,7 +85,9 @@ const gradeQuiz = async (req, res) => {
       percentage,
       passed,
       xpGiven,
-      xpAmount
+      xpAmount,
+      rewardTxHash,
+      rewardAmount: rewardTxHash ? 0.01 : 0
     });
 
   } catch (error) {
