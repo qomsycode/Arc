@@ -35,7 +35,7 @@ const WalletBadge = ({ hideXp = false }: WalletBadgeProps) => {
   return (
     <button
       onClick={handleCopy}
-      className="flex items-center gap-1.5 sm:gap-2 bg-[#181c28] border border-[#1e2436] rounded-full px-2.5 py-1.5 sm:px-4 sm:py-2 hover:border-[#676fff] transition-all duration-200 cursor-pointer group shrink-0"
+      className="flex items-center gap-1.5 sm:gap-2 bg-[#111] border border-[#1a1a1a] rounded-full px-2.5 py-1.5 sm:px-4 sm:py-2 hover:border-[#333] transition-colors cursor-pointer group shrink-0"
       title="Copy wallet address"
     >
       {/* Live dot */}

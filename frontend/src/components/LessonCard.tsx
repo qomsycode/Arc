@@ -17,7 +17,7 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, status }) => {
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${status === 'completed' ? 'bg-[#3cd876]/10 text-[#3cd876]' : isLocked ? 'bg-[#222] text-[#555]' : 'bg-[#676fff]/10 text-[#676fff]'}`}>
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-[#1a1a1a] ${status === 'completed' ? 'text-[#3cd876]' : isLocked ? 'text-[#444]' : 'text-[#676fff]'}`}>
             {status === 'completed' ? <CheckCircle2 size={20} /> : isLocked ? <Lock size={20} /> : <PlayCircle size={20} />}
           </div>
           <div>
@@ -28,7 +28,7 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, status }) => {
         
         {/* XP Badge */}
         {!isLocked && (
-          <div className="bg-[#181c28] border border-[#1e2436] rounded-full px-3 py-1 text-xs font-bold text-[#676fff]">
+          <div className="bg-[#1a1a1a] border border-[#222] rounded-full px-3 py-1 text-xs font-bold text-[#676fff]">
             +50 XP
           </div>
         )}
