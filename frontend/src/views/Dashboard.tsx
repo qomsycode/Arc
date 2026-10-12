@@ -78,14 +78,14 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors">
       {/* Top Navigation */}
-      <header className="border-b border-gray-200 dark:border-[#1a1a1a] bg-white dark:bg-[#0e0e0e] px-4 sm:px-10 py-3.5 sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-[#676fff] flex items-center justify-center text-white font-black text-sm shadow-sm">
+      <header className="border-b border-gray-200 dark:border-[#1a1a1a] bg-white dark:bg-[#0e0e0e] px-3 sm:px-10 py-2.5 sm:py-3.5 sticky top-0 z-20">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-1.5 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#676fff] flex items-center justify-center text-white font-black text-xs sm:text-sm shadow-sm shrink-0">
               A
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-base sm:text-lg font-bold tracking-tight text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-sm sm:text-lg font-bold tracking-tight text-slate-900 dark:text-white truncate">
                 ARCademy
               </span>
               <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 px-2 py-0.5 rounded-full">
@@ -95,12 +95,12 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <ThemeToggle />
             <WalletBadge />
             <button
               onClick={logout}
-              className="text-xs sm:text-sm font-medium text-slate-600 dark:text-[#777] hover:text-slate-900 dark:hover:text-white border border-gray-200 dark:border-[#1a1a1a] hover:border-gray-300 dark:hover:border-[#333] bg-white dark:bg-[#111] px-3 py-2 rounded-lg transition-colors cursor-pointer shadow-sm dark:shadow-none"
+              className="text-[11px] sm:text-sm font-medium text-slate-600 dark:text-[#777] hover:text-slate-900 dark:hover:text-white border border-gray-200 dark:border-[#1a1a1a] hover:border-gray-300 dark:hover:border-[#333] bg-white dark:bg-[#111] px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors cursor-pointer shadow-sm dark:shadow-none whitespace-nowrap"
             >
               Logout
             </button>
