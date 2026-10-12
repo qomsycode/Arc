@@ -45,34 +45,47 @@ const gradeQuiz = async (req, res) => {
       // 1. Mark lesson as complete
       await markLessonComplete(userId, lessonId, percentage);
 
-      // 2. Reward 50 XP
-      xpAmount = 50;
-      await addXP(userId, xpAmount);
-      xpGiven = true;
-
-      // 3. Web3 Reward Integration ($0.01 USDC)
+      // 2. Web3 Reward & XP Integration (Strict 1-time-per-lesson rule)
       try {
         const supabase = require('../db/supabaseClient');
         const { sendQuizReward } = require('../services/web3Service');
 
-        // Fetch user's wallet address
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('wallet_address')
-          .eq('id', userId)
-          .single();
+        // Check if user has ALREADY received a reward for this specific lesson
+        const { data: existingReward } = await supabase
+          .from('rewards_log')
+          .select('id, tx_hash')
+          .eq('user_id', userId)
+          .eq('reward_type', `quiz_pass_lesson_${lessonId}`)
+          .maybeSingle();
 
-        if (profile && profile.wallet_address) {
-          // Trigger the smart contract
-          rewardTxHash = await sendQuizReward(profile.wallet_address, lessonId);
-          
-          if (rewardTxHash) {
-            // Log the reward in the database
-            const { logReward } = require('../models/rewardsModel');
-            await logReward(userId, 0.01, 'quiz_pass', rewardTxHash);
-          }
+        if (existingReward) {
+          console.log(`User ${userId} already received reward for lesson ${lessonId}. Skipping Web3 payout.`);
+          rewardTxHash = existingReward.tx_hash;
         } else {
-          console.log(`User ${userId} passed but has no wallet address connected.`);
+          // Reward XP only on the first pass
+          xpAmount = 50;
+          await addXP(userId, xpAmount);
+          xpGiven = true;
+
+          // Fetch user's connected wallet address
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('wallet_address')
+            .eq('id', userId)
+            .single();
+
+          if (profile && profile.wallet_address) {
+            // Trigger smart contract on Arc Mainnet
+            rewardTxHash = await sendQuizReward(profile.wallet_address, lessonId);
+            
+            if (rewardTxHash) {
+              // Log with unique tag to guarantee idempotency and prevent duplicate claims
+              const { logReward } = require('../models/rewardsModel');
+              await logReward(userId, 0.01, `quiz_pass_lesson_${lessonId}`, rewardTxHash);
+            }
+          } else {
+            console.log(`User ${userId} passed but has no wallet address connected.`);
+          }
         }
       } catch (err) {
         console.error('Failed to process Web3 reward:', err);
