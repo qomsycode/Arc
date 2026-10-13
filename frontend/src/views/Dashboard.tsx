@@ -12,7 +12,8 @@ import {
   Sparkles, 
   ExternalLink,
   Flame,
-  Activity
+  Activity,
+  Bot
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -206,8 +207,8 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Action Pathways: Learn vs Build */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+        {/* Action Pathways: Learn vs Build vs Copilot */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
           <Link to="/learn" className="block group">
             <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] group-hover:border-indigo-300 dark:group-hover:border-[#333] transition-all rounded-2xl p-6 sm:p-7 shadow-sm dark:shadow-none h-full flex flex-col justify-between">
               <div>
@@ -222,12 +223,12 @@ const Dashboard = () => {
                   Ten hands-on modules covering EVM compatibility, stablecoin architecture, embedded wallets, and smart contract escrow.
                 </p>
               </div>
-              <div className="flex items-center gap-4 text-xs font-medium text-slate-500 dark:text-[#555] pt-4 border-t border-gray-100 dark:border-[#1a1a1a]">
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-[#555] pt-4 border-t border-gray-100 dark:border-[#1a1a1a] flex-wrap">
                 <span>10 Modules</span>
                 <span>•</span>
-                <span>Passing Threshold: 80%</span>
+                <span>80% Pass</span>
                 <span>•</span>
-                <span>Earn USDC on-chain</span>
+                <span>USDC Rewards</span>
               </div>
             </div>
           </Link>
@@ -239,19 +240,43 @@ const Dashboard = () => {
                   <Code2 size={20} />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
-                  <span>Build Challenges & Bounties</span>
+                  <span>Build Challenges</span>
                   <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-emerald-600 dark:text-emerald-400" />
                 </h3>
                 <p className="text-sm text-slate-600 dark:text-[#777] leading-relaxed mb-4">
                   Real-world coding assignments. Fork our starter repos, build decentralized tools, and submit PRs for reviewer validation.
                 </p>
               </div>
-              <div className="flex items-center gap-4 text-xs font-medium text-slate-500 dark:text-[#555] pt-4 border-t border-gray-100 dark:border-[#1a1a1a]">
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-[#555] pt-4 border-t border-gray-100 dark:border-[#1a1a1a] flex-wrap">
                 <span>5 Real Projects</span>
                 <span>•</span>
-                <span>Code Review Workflow</span>
+                <span>Code Reviews</span>
                 <span>•</span>
                 <span>USDC Grants</span>
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/copilot" className="block group">
+            <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] group-hover:border-purple-300 dark:group-hover:border-[#333] transition-all rounded-2xl p-6 sm:p-7 shadow-sm dark:shadow-none h-full flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-[#181818] border border-purple-100 dark:border-[#222] text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4">
+                  <Bot size={20} />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                  <span>Arc Copilot (AI)</span>
+                  <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-purple-600 dark:text-purple-400" />
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-[#777] leading-relaxed mb-4">
+                  AI Architecture Assistant. Generate Arc-compatible smart contracts, configure Hardhat scripts, and audit Solidity code.
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-[#555] pt-4 border-t border-gray-100 dark:border-[#1a1a1a] flex-wrap">
+                <span>Solidity Generator</span>
+                <span>•</span>
+                <span>USDC Precompile</span>
+                <span>•</span>
+                <span>Instant AI</span>
               </div>
             </div>
           </Link>

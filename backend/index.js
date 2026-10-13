@@ -39,10 +39,12 @@ const authRoutes = require('./routes/authRoutes');
 const quizRoutes = require('./routes/quizRoutes');
 const progressRoutes = require('./routes/progressRoutes');
 const submissionRoutes = require('./routes/submissionRoutes');
+const copilotRoutes = require('./routes/copilotRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/submissions', submissionRoutes);
+app.use('/api/copilot', copilotRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -6,6 +6,7 @@ import LessonView from './views/LessonView';
 import BuildPage from './views/BuildPage';
 import ChallengeView from './views/ChallengeView';
 import AdminReviewPage from './views/AdminReviewPage';
+import CopilotPage from './views/CopilotPage';
 import { useAuth } from './contexts/AuthContext';
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/learn/:id" element={<LessonView />} />
         <Route path="/build" element={<BuildPage />} />
         <Route path="/build/:id" element={<ChallengeView />} />
+        <Route path="/copilot" element={<CopilotPage />} />
         <Route path="/admin" element={<AdminReviewPage />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
