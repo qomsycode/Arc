@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
-import WalletBadge from '../components/WalletBadge';
-import ThemeToggle from '../components/ThemeToggle';
+import Navbar from '../components/Navbar';
 import { challenges } from '../data/challenges';
-import { ArrowLeft, Award, ExternalLink } from 'lucide-react';
+import { Award, ExternalLink } from 'lucide-react';
 import axios from 'axios';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
@@ -20,7 +19,7 @@ interface Submission {
 }
 
 const BuildPage = () => {
-  const { authenticated, ready, profile, getAccessToken } = useAuth();
+  const { authenticated, ready, getAccessToken } = useAuth();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
 
   useEffect(() => {
@@ -44,29 +43,8 @@ const BuildPage = () => {
   if (!authenticated) return <Navigate to="/login" replace />;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors">
-      {/* Top Navbar */}
-      <nav className="w-full border-b border-gray-200 dark:border-[#1a1a1a] px-4 sm:px-8 py-3.5 flex justify-between items-center bg-white dark:bg-[#0e0e0e] sticky top-0 z-10 gap-2">
-        <div className="flex items-center gap-2 sm:gap-6 min-w-0">
-          <Link to="/dashboard" className="text-slate-500 dark:text-[#8892b0] hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium shrink-0">
-            <ArrowLeft size={16} />
-            <span>Dashboard</span>
-          </Link>
-          <div className="h-4 w-[1px] bg-gray-200 dark:bg-[#222] hidden sm:block" />
-          <span className="font-bold text-xs sm:text-lg tracking-tight truncate hidden sm:inline text-slate-900 dark:text-white">
-            ARCademy Build Bounties
-          </span>
-        </div>
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {(profile?.role === 'admin' || profile?.role === 'reviewer') && (
-            <Link to="/admin" className="text-xs text-slate-600 dark:text-[#8892b0] hover:text-slate-900 dark:hover:text-white border border-gray-200 dark:border-[#333] px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-colors bg-white dark:bg-[#111]">
-              Admin Portal
-            </Link>
-          )}
-          <ThemeToggle />
-          <WalletBadge />
-        </div>
-      </nav>
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors bg-grid-pattern">
+      <Navbar />
 
       {/* Hero Header */}
       <header className="max-w-6xl mx-auto px-4 sm:px-8 pt-6 sm:pt-8 pb-4">

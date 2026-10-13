@@ -12,10 +12,10 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, status }) => {
   const isLocked = status === 'locked';
   
   return (
-    <div className={`relative bg-white dark:bg-[#111] border rounded-2xl p-6 transition-all duration-200 shadow-sm dark:shadow-none ${
+    <div className={`relative bg-white dark:bg-[#111] border rounded-2xl p-6 transition-all duration-200 shadow-xs dark:shadow-none ${
       isLocked 
         ? 'border-gray-200 dark:border-[#222] opacity-60' 
-        : 'border-gray-200 dark:border-[#222] hover:border-indigo-300 dark:hover:border-[#444]'
+        : 'border-gray-200 dark:border-[#222] hover:border-indigo-300 dark:hover:border-[#444] card-hover-effect'
     }`}>
       
       {/* Header */}

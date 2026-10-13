@@ -1,8 +1,7 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import WalletBadge from '../components/WalletBadge';
-import ThemeToggle from '../components/ThemeToggle';
+import Navbar from '../components/Navbar';
 import { lessons } from '../data/lessons';
 import { 
   BookOpen, 
@@ -17,9 +16,9 @@ import {
 } from 'lucide-react';
 
 const Dashboard = () => {
-  const { authenticated, ready, logout, getAccessToken, profile } = useAuth();
+  const { authenticated, ready, getAccessToken, profile } = useAuth();
   const navigate = useNavigate();
-  const [stats, setStats] = React.useState({ 
+  const [stats, setStats] = useState({ 
     progressPercent: 0, 
     completedCount: 0,
     challengesPassed: 0, 
@@ -27,13 +26,13 @@ const Dashboard = () => {
     nextLesson: lessons[0]
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (ready && !authenticated) {
       navigate('/login');
     }
   }, [ready, authenticated, navigate]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchDashboardStats = async () => {
       if (!authenticated) return;
       try {
@@ -77,37 +76,8 @@ const Dashboard = () => {
   if (!ready || !authenticated) return null;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors">
-      {/* Top Navigation */}
-      <header className="border-b border-gray-200 dark:border-[#1a1a1a] bg-white dark:bg-[#0e0e0e] px-3 sm:px-10 py-2.5 sm:py-3.5 sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-1.5 sm:gap-3">
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#676fff] flex items-center justify-center text-white font-black text-xs sm:text-sm shadow-sm shrink-0">
-              A
-            </div>
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="text-sm sm:text-lg font-bold tracking-tight text-slate-900 dark:text-white truncate">
-                ARCademy
-              </span>
-              <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 px-2 py-0.5 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Arc Mainnet
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            <ThemeToggle />
-            <WalletBadge />
-            <button
-              onClick={logout}
-              className="text-[11px] sm:text-sm font-medium text-slate-600 dark:text-[#777] hover:text-slate-900 dark:hover:text-white border border-gray-200 dark:border-[#1a1a1a] hover:border-gray-300 dark:hover:border-[#333] bg-white dark:bg-[#111] px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors cursor-pointer shadow-sm dark:shadow-none whitespace-nowrap"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors bg-grid-pattern">
+      <Navbar />
 
       {/* Main Content Container */}
       <main className="max-w-6xl mx-auto px-4 sm:px-10 py-8 sm:py-10">
@@ -210,7 +180,7 @@ const Dashboard = () => {
         {/* Action Pathways: Learn vs Build vs Copilot */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
           <Link to="/learn" className="block group">
-            <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] group-hover:border-indigo-300 dark:group-hover:border-[#333] transition-all rounded-2xl p-6 sm:p-7 shadow-sm dark:shadow-none h-full flex flex-col justify-between">
+            <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] group-hover:border-indigo-300 dark:group-hover:border-[#333] card-hover-effect rounded-2xl p-6 sm:p-7 shadow-xs dark:shadow-none h-full flex flex-col justify-between">
               <div>
                 <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-[#181818] border border-indigo-100 dark:border-[#222] text-indigo-600 dark:text-[#676fff] flex items-center justify-center mb-4">
                   <BookOpen size={20} />
@@ -234,7 +204,7 @@ const Dashboard = () => {
           </Link>
 
           <Link to="/build" className="block group">
-            <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] group-hover:border-emerald-300 dark:group-hover:border-[#333] transition-all rounded-2xl p-6 sm:p-7 shadow-sm dark:shadow-none h-full flex flex-col justify-between">
+            <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] group-hover:border-emerald-300 dark:group-hover:border-[#333] card-hover-effect rounded-2xl p-6 sm:p-7 shadow-xs dark:shadow-none h-full flex flex-col justify-between">
               <div>
                 <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-[#181818] border border-emerald-100 dark:border-[#222] text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4">
                   <Code2 size={20} />
@@ -258,7 +228,7 @@ const Dashboard = () => {
           </Link>
 
           <Link to="/copilot" className="block group">
-            <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] group-hover:border-purple-300 dark:group-hover:border-[#333] transition-all rounded-2xl p-6 sm:p-7 shadow-sm dark:shadow-none h-full flex flex-col justify-between">
+            <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] group-hover:border-purple-300 dark:group-hover:border-[#333] card-hover-effect rounded-2xl p-6 sm:p-7 shadow-xs dark:shadow-none h-full flex flex-col justify-between">
               <div>
                 <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-[#181818] border border-purple-100 dark:border-[#222] text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4">
                   <Bot size={20} />

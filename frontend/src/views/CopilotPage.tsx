@@ -1,13 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { 
-  Bot, 
   Send, 
   Sparkles, 
-  ArrowLeft, 
   Copy, 
   Check, 
   Terminal, 
@@ -16,8 +13,7 @@ import {
   Zap, 
   RefreshCw 
 } from 'lucide-react';
-import WalletBadge from '../components/WalletBadge';
-import ThemeToggle from '../components/ThemeToggle';
+import Navbar from '../components/Navbar';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
@@ -131,40 +127,8 @@ const CopilotPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-[#0a0a0a] text-neutral-900 dark:text-neutral-100 flex flex-col transition-colors">
-      {/* Top Navbar */}
-      <nav className="w-full border-b border-neutral-200 dark:border-[#222] px-4 sm:px-8 py-3.5 flex justify-between items-center bg-white dark:bg-[#0e0e0e] sticky top-0 z-20">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <Link
-            to="/dashboard"
-            className="p-1.5 rounded-lg text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-[#1a1a1a] transition-colors"
-            title="Back to Dashboard"
-          >
-            <ArrowLeft size={18} />
-          </Link>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600/10 dark:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/30 flex items-center justify-center text-indigo-600 dark:text-[#676fff]">
-              <Bot size={18} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-sm sm:text-base">Arc Copilot</span>
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                  AI Beta
-                </span>
-              </div>
-              <p className="text-[11px] text-neutral-500 dark:text-[#888] hidden sm:block">
-                Specialized in Arc L1 Smart Contracts & Protocol Architecture
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <ThemeToggle />
-          <WalletBadge />
-        </div>
-      </nav>
+    <div className="min-h-screen bg-neutral-50 dark:bg-[#0a0a0a] text-neutral-900 dark:text-neutral-100 flex flex-col transition-colors bg-grid-pattern">
+      <Navbar />
 
       {/* Main Container */}
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col gap-4">
@@ -237,12 +201,19 @@ const CopilotPage = () => {
 
                             if (isBlock) {
                               return (
-                                <div className="relative my-3 rounded-lg overflow-hidden border border-neutral-200 dark:border-[#222] bg-neutral-900 text-neutral-100">
-                                  <div className="flex items-center justify-between px-3 py-1.5 bg-neutral-800 border-b border-neutral-700 text-[11px] font-mono text-neutral-400">
-                                    <span>{className?.replace('language-', '') || 'code'}</span>
+                                <div className="relative my-3 rounded-xl overflow-hidden border border-neutral-300 dark:border-[#222] bg-[#0d1117] text-neutral-100 shadow-md">
+                                  <div className="flex items-center justify-between px-3.5 py-2 bg-[#161b22] border-b border-[#21262d] text-[11px] font-mono text-neutral-400">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]/90 inline-block" />
+                                      <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]/90 inline-block" />
+                                      <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]/90 inline-block" />
+                                      <span className="ml-2 px-1.5 py-0.5 rounded bg-neutral-800 text-[10px] text-neutral-300 font-mono uppercase tracking-wider">
+                                        {className?.replace('language-', '') || 'solidity'}
+                                      </span>
+                                    </div>
                                     <button
                                       onClick={() => handleCopyCode(codeString, codeBlockId)}
-                                      className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer"
+                                      className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer px-2 py-0.5 rounded hover:bg-neutral-800"
                                     >
                                       {copiedId === codeBlockId ? (
                                         <>

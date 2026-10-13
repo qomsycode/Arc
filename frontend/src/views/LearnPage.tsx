@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Navigate, Link } from 'react-router-dom';
-import WalletBadge from '../components/WalletBadge';
+import { Navigate } from 'react-router-dom';
 import LessonCard from '../components/LessonCard';
-import ThemeToggle from '../components/ThemeToggle';
+import Navbar from '../components/Navbar';
 import { lessons } from '../data/lessons';
-import { ArrowLeft, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import axios from 'axios';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
@@ -72,24 +71,8 @@ const LearnPage = () => {
   const progressPercent = Math.round((completedCount / lessons.length) * 100);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors">
-      {/* Top Navbar */}
-      <nav className="w-full border-b border-gray-200 dark:border-[#1a1a1a] px-4 sm:px-8 py-3.5 flex justify-between items-center bg-white dark:bg-[#0e0e0e] sticky top-0 z-10 gap-2">
-        <div className="flex items-center gap-2 sm:gap-6 min-w-0">
-          <Link to="/dashboard" className="text-slate-500 dark:text-[#8892b0] hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium shrink-0">
-            <ArrowLeft size={16} />
-            <span>Dashboard</span>
-          </Link>
-          <div className="h-4 w-[1px] bg-gray-200 dark:bg-[#222] hidden sm:block" />
-          <span className="font-bold text-xs sm:text-lg tracking-tight truncate hidden sm:inline text-slate-900 dark:text-white">
-            ARCademy Curriculum
-          </span>
-        </div>
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <ThemeToggle />
-          <WalletBadge />
-        </div>
-      </nav>
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors bg-grid-pattern">
+      <Navbar />
 
       {/* Hero / Progress Overview Header */}
       <header className="max-w-6xl mx-auto px-4 sm:px-8 pt-6 sm:pt-8 pb-4">
