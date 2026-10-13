@@ -18,6 +18,7 @@ app.use(cors({
     if (
       origin === 'http://localhost:3000' ||
       origin.endsWith('.vercel.app') ||
+      origin.endsWith('thearcademy.xyz') ||
       (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL)
     ) {
       return callback(null, true);
