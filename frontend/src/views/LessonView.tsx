@@ -24,7 +24,7 @@ const LessonView = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isLocked, setIsLocked] = useState(false);
   const [checkingProgress, setCheckingProgress] = useState(true);
-  const [rewardData, setRewardData] = useState<{ txHash?: string, amount?: number } | null>(null);
+  const [rewardData, setRewardData] = useState<{ txHash?: string, amount?: number, status?: string } | null>(null);
 
   const lesson = lessons.find(l => l.id === Number(id));
 
@@ -98,9 +98,9 @@ const LessonView = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      const { score, rewardTxHash, rewardAmount } = res.data;
+      const { score, rewardTxHash, rewardAmount, rewardStatus } = res.data;
       setQuizScore(score);
-      setRewardData({ txHash: rewardTxHash, amount: rewardAmount });
+      setRewardData({ txHash: rewardTxHash, amount: rewardAmount, status: rewardStatus });
       setShowQuiz(false);
       setShowResults(true);
 
@@ -269,6 +269,7 @@ const LessonView = () => {
           isClaiming={isClaiming}
           rewardTxHash={rewardData?.txHash}
           rewardAmount={rewardData?.amount}
+          rewardStatus={rewardData?.status}
         />
       )}
     </div>
