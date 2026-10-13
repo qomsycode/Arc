@@ -17,9 +17,15 @@ interface ProgressRecord {
 }
 
 const LearnPage = () => {
-  const { authenticated, ready, getAccessToken } = useAuth();
+  const { authenticated, ready, getAccessToken, refreshProfile } = useAuth();
   const [completedLessonIds, setCompletedLessonIds] = useState<number[]>([]);
   const [_loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (authenticated) {
+      refreshProfile();
+    }
+  }, [authenticated]);
 
   useEffect(() => {
     const fetchProgress = async () => {

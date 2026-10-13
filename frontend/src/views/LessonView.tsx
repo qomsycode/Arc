@@ -104,6 +104,8 @@ const LessonView = () => {
       setShowQuiz(false);
       setShowResults(true);
 
+      // Instantly refresh profile so XP updates in header without needing a page refresh
+      await refreshProfile();
     } catch (error: any) {
       console.error('Failed to submit quiz', error);
       setSubmitError(error.response?.data?.error || error.message || 'Failed to submit quiz. Please try again.');
