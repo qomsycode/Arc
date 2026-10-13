@@ -1,11 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import WalletBadge from './WalletBadge';
 import ThemeToggle from './ThemeToggle';
 import { 
   LayoutDashboard, 
   BookOpen, 
   Code2, 
-  Bot
+  Bot,
+  LogOut
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -17,6 +19,7 @@ const NAV_ITEMS = [
 
 const Navbar = () => {
   const location = useLocation();
+  const { logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-30 w-full backdrop-blur-md bg-white/85 dark:bg-[#0a0a0a]/85 border-b border-neutral-200/80 dark:border-[#1a1a1a] transition-colors">
@@ -72,9 +75,16 @@ const Navbar = () => {
           </nav>
 
           {/* Right: Badges & Controls */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             <ThemeToggle />
             <WalletBadge />
+            <button
+              onClick={logout}
+              className="p-1.5 sm:p-2 rounded-lg text-neutral-400 hover:text-red-500 hover:bg-neutral-100 dark:hover:bg-[#1a1a1a] transition-colors cursor-pointer"
+              title="Disconnect / Log out"
+            >
+              <LogOut size={16} />
+            </button>
           </div>
         </div>
       </div>
