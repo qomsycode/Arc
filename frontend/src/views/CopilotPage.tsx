@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { 
@@ -11,7 +12,8 @@ import {
   ShieldCheck, 
   Coins, 
   Zap, 
-  RefreshCw 
+  RefreshCw,
+  ArrowLeft
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 
@@ -132,6 +134,19 @@ const CopilotPage = () => {
 
       {/* Main Container */}
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col gap-4">
+        {/* Back navigation */}
+        <div className="flex items-center justify-between">
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-500 hover:text-indigo-600 dark:text-neutral-400 dark:hover:text-[#676fff] transition-colors group"
+          >
+            <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+            <span>Back to Dashboard</span>
+          </Link>
+          <span className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
+            Arc L1 AI Copilot
+          </span>
+        </div>
         {/* Starter Chips (shown when few messages) */}
         {messages.length <= 2 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">

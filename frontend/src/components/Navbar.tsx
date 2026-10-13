@@ -7,7 +7,8 @@ import {
   BookOpen, 
   Code2, 
   Bot,
-  LogOut
+  LogOut,
+  ArrowLeft
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -20,13 +21,25 @@ const NAV_ITEMS = [
 const Navbar = () => {
   const location = useLocation();
   const { logout } = useAuth();
+  const isSubpage = location.pathname !== '/dashboard';
 
   return (
     <header className="sticky top-0 z-30 w-full backdrop-blur-md bg-white/85 dark:bg-[#0a0a0a]/85 border-b border-neutral-200/80 dark:border-[#1a1a1a] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16 gap-3">
           {/* Left: Brand + Network status */}
-          <div className="flex items-center gap-4 sm:gap-6 shrink-0">
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            {isSubpage && (
+              <Link
+                to="/dashboard"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 dark:bg-[#1a1a1a] hover:bg-neutral-200 dark:hover:bg-[#252525] transition-all group"
+                title="Back to Dashboard"
+              >
+                <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+                <span className="hidden sm:inline">Dashboard</span>
+              </Link>
+            )}
+
             <Link to="/dashboard" className="flex items-center gap-2 group">
               <div className="w-8 h-8 rounded-lg bg-indigo-600 dark:bg-[#676fff] text-white flex items-center justify-center font-black text-sm tracking-tighter group-hover:scale-105 transition-transform shadow-xs">
                 A

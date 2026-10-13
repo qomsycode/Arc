@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { challenges } from '../data/challenges';
-import { Award, ExternalLink } from 'lucide-react';
+import { Award, ExternalLink, ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
@@ -47,7 +47,16 @@ const BuildPage = () => {
       <Navbar />
 
       {/* Hero Header */}
-      <header className="max-w-6xl mx-auto px-4 sm:px-8 pt-6 sm:pt-8 pb-4">
+      <header className="max-w-6xl mx-auto px-4 sm:px-8 pt-4 sm:pt-6 pb-4">
+        <div className="mb-3">
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-500 hover:text-indigo-600 dark:text-neutral-400 dark:hover:text-[#676fff] transition-colors group"
+          >
+            <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+            <span>Back to Dashboard</span>
+          </Link>
+        </div>
         <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1a1a1a] rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-sm dark:shadow-none">
           <div>
             <span className="text-xs font-bold text-emerald-600 dark:text-[#3cd876] uppercase tracking-wider mb-2 flex items-center gap-2">
